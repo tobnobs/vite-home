@@ -1,9 +1,4 @@
-
-
-export const getRandom = (max: number, min = 0) =>
-  Math.floor(Math.random() * (max - min)) + min;
-
-const colors = ['#078D70', '#26CEAA', '#98E8C1', '#FFFFFF', '#7BADE2', '#5049CC', '#3D1A78'];
+import { getRandom, getRandomColor } from '../utils';
 
 export const getRandomDirection = () => getRandom(2) - 1;
 
@@ -26,5 +21,5 @@ export const generateItem = (width: number, height: number): Item => ({
   initialXDirection: getRandomDirection(),
   initialYDirection: getRandomDirection(),
   initialBlurDirection: getRandomDirection(),
-  color: colors[getRandom(colors.length)],
+  color: getRandomColor(),
 });
