@@ -9,8 +9,14 @@ echo
 REMOTE_DIR="."
 LOCAL_DIR="./dist"
 
+echo "Building site"
+rm -rf dist
+bun --bun run build
+echo
+
 echo "Uploading files to porkbun"
 lftp -e "mirror -R $LOCAL_DIR $REMOTE_DIR; bye" -u "$FTP_USER","$FTP_PASSWORD" ftp://"$FTP_HOST"
+echo
+
 echo "DONE"
 
-```
