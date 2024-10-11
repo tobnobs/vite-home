@@ -22,13 +22,13 @@
     "wouter": "^2.12.1"
   },
   "devDependencies": {
+    "@types/bun": "^1.1.11",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
-    "@types/web": "^0.0.135",
+    "@types/web": "^0.0.170",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.10.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
-    "bun-types": "^1.0.15",
     "eslint": "^8.53.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react-hooks": "^4.6.0",
