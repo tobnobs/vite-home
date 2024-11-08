@@ -1,17 +1,27 @@
 import React, { useEffect } from "react";
 import { useThree } from "@react-three/fiber";
+import { AdaptiveDpr, PerspectiveCamera, Stats } from "@react-three/drei";
 
 const Controller = () => {
-  const { setSize, camera } = useThree();
+  const { setSize } = useThree();
 
   useEffect(() => {
-    console.log({ width: window.innerWidth, height: window.innerHeight });
     setSize(window.innerWidth, window.innerHeight);
-    camera.position.x = -window.innerWidth / 2;
-    camera.position.y = -window.innerHeight / 2;
-  }, []);
+  }, [setSize]);
 
-  return null;
+  return (
+    <>
+      <PerspectiveCamera
+        makeDefault
+        position={[0, 0, 40]}
+        fov={50}
+      />
+      <ambientLight intensity={1.5} />
+      <pointLight position={[10, 10, 10]} intensity={1} castShadow />
+      <AdaptiveDpr />
+      <Stats />
+    </>
+  );
 };
 
 export default Controller;

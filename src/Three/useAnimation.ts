@@ -1,40 +1,59 @@
 import { useMemo, useRef } from "react";
-import { getRandom, getRandomColor } from "../utils";
+import { getRandomColor } from "../utils";
 import { useFrame } from "@react-three/fiber";
-import { Mesh } from "three";
+import { MathUtils, Mesh } from "three";
 
-
-const rad = [20, 120];
-const speed = [50, 150];
+const rad = [60, 60];
 
 const useAnimation = () => {
   const meshRef = useRef<Mesh>(null!);
-  const { radius, ySpeed, xSpeed, color, maxX, maxY } = useMemo(() => {
-    const radius = getRandom(rad[0], rad[1]);
-    const maxY = window.innerHeight + 2 * rad[1];
-    const maxX = window.innerWidth + 2 * rad[1];
+
+  const {
+    color,
+    maxX,
+    maxY,
+    factor,
+    speed,
+    xFactor,
+    yFactor,
+    zFactor,
+  } = useMemo(() => {
 
     return {
-      radius,
-      ySpeed: getRandom(speed[0], speed[1]),
-      xSpeed: getRandom(speed[0], speed[1]),
       color: getRandomColor(),
       maxY: window.innerHeight + 2 * rad[1],
       maxX: window.innerWidth + 2 * rad[1],
+
+      factor: MathUtils.randInt(20, 100),
+      speed: MathUtils.randFloat(0.01, 0.1),
+      xFactor: MathUtils.randFloatSpread(40),
+      yFactor: MathUtils.randFloatSpread(10),
+      zFactor: MathUtils.randFloatSpread(1),
     };
   }, []);
 
   useFrame(({ clock }) => {
-    // console.log({ width: window.innerWidth, clock: clock.getElapsedTime() });
-    meshRef.current.position.y =
-      -((clock.getElapsedTime() * ySpeed) % (window.innerHeight + 2 * radius)) +
-      radius;
-    meshRef.current.position.x =
-      -((clock.getElapsedTime() * xSpeed) % (window.innerWidth + 2 * radius)) +
-      radius;
+    const t = factor + clock.elapsedTime * (speed / 2);
+    meshRef.current.position?.set(
+      Math.cos(t) +
+        Math.sin(t * 1) / 10 +
+        xFactor +
+        Math.cos((t / 10) * factor) +
+        (Math.sin(t * 1) * factor) / 10,
+      Math.sin(t) +
+        Math.cos(t * 2) / 10 +
+        yFactor +
+        Math.sin((t / 10) * factor) +
+        (Math.cos(t * 2) * factor) / 10,
+      Math.sin(t) +
+        Math.cos(t * 2) / 10 +
+        zFactor +
+        Math.cos((t / 10) * factor) +
+        (Math.sin(t * 3) * factor) / 4
+    );
   });
 
-  return { meshRef, radius, color, maxX, maxY };
+  return { meshRef, color, maxX, maxY };
 };
 
 export default useAnimation;

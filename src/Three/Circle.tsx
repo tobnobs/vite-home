@@ -1,14 +1,26 @@
+import { Instance, Instances } from "@react-three/drei";
 import useAnimation from "./useAnimation";
 
-const Circle = () => {
-  const { meshRef, radius, color } = useAnimation();
+const circleCount = 50;
+
+const Cicle = () => {
+  const { meshRef, color } = useAnimation();
 
   return (
-    <mesh ref={meshRef}>
-      <circleGeometry args={[radius, 30]} />
-      <meshBasicMaterial color={color} />
-    </mesh>
+    <Instance ref={meshRef} color={color} />
+  );
+}
+
+const Circles = () => {
+  return (
+    <Instances limit={circleCount} range={circleCount}>
+      <circleGeometry args={[2, 30]} />
+      <meshBasicMaterial color="#f0f0f0" />
+      {Array.from({ length: circleCount }).map((_, index) => (
+        <Cicle key={index} />
+      ))}
+    </Instances>
   );
 };
 
-export default Circle;
+export default Circles;
