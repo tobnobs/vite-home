@@ -12,5 +12,3 @@ LOCAL_DIR="./dist"
 echo "Uploading files to porkbun"
 lftp -e "mirror -R $LOCAL_DIR $REMOTE_DIR; bye" -u "$FTP_USER","$FTP_PASSWORD" ftp://"$FTP_HOST"
 echo "DONE"
-
-```
