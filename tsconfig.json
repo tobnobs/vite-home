@@ -27,6 +27,6 @@
     "downlevelIteration": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src", "bun-types"],
+  "include": ["bun-types"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
