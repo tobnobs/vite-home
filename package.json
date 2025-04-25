@@ -6,9 +6,11 @@
   "scripts": {
     "types": "tsc",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "build": "yarn build:lavalamp && yarn build:mistress",
-    "build:lavalamp": "cd packages/lavalamp && yarn build",
-    "build:mistress": "cd packages/mistress && yarn build"
+    "build:all": "bun run build:lavalamp && bun run build:mistress",
+    "build:lavalamp": "cd packages/lavalamp && bun run build",
+    "build:mistress": "cd packages/mistress && bun run build",
+    "release:lavalamp": "bun run build:lavalamp && ./porkbun-release.sh lavalamp",
+    "release:mistress": "bun run build:mistress && ./porkbun-release.sh mistress"
   },
   "dependencies": {},
   "devDependencies": {},
