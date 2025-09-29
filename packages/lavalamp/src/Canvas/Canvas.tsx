@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { generateItem, Item } from "./utils";
 
 const radius = [1, 120];
-const speed = 1;
+const speed = 10;
 const blurSpeed = 1;
 
 const Canvas = () => {
@@ -32,37 +32,21 @@ const Canvas = () => {
       return;
     }
 
-    canvas.width = windowWidth;
-    canvas.height = windowHeight;
+    canvas.width = windowWidth + radius[1] * 2;
+    canvas.height = windowHeight + radius[1] * 2;
     context.globalCompositeOperation = "lighter";
 
     const items: Item[] = [];
     let count = 50;
-
     while (count--) {
       items.push(generateItem(canvas.width, canvas.height));
     }
 
+    const pi2 = Math.PI * 2;
+
     const changeCanvas = () => {
       context.clearRect(0, 0, canvas.width, canvas.height);
       items.forEach((item) => {
-        if (
-          (item.x + item.initialXDirection * speed >= canvas.width &&
-            item.initialXDirection !== 0) ||
-          (item.x + item.initialXDirection * speed <= 0 &&
-            item.initialXDirection !== 0)
-        ) {
-          item.initialXDirection = item.initialXDirection * -1;
-        }
-        if (
-          (item.y + item.initialYDirection * speed >= canvas.height &&
-            item.initialYDirection !== 0) ||
-          (item.y + item.initialYDirection * speed <= 0 &&
-            item.initialYDirection !== 0)
-        ) {
-          item.initialYDirection = item.initialYDirection * -1;
-        }
-
         if (
           (item.blur + item.initialBlurDirection * blurSpeed >= radius[1] &&
             item.initialBlurDirection !== 0) ||
@@ -72,15 +56,20 @@ const Canvas = () => {
           item.initialBlurDirection *= -1;
         }
 
-        item.x += item.initialXDirection * speed;
-        item.y += item.initialYDirection * speed;
+        item.x =
+          (item.x + item.initialXDirection * speed + canvas.width) %
+          canvas.width;
+        item.y =
+          (item.y + item.initialYDirection * speed + canvas.height) %
+          canvas.height;
         item.blur += item.initialBlurDirection * blurSpeed;
-        context.beginPath();
+
         context.filter = `blur(${item.blur}px)`;
-        context.arc(item.x, item.y, item.radius, 0, Math.PI * 2);
         context.fillStyle = item.color;
+
+        context.beginPath();
+        context.arc(item.x, item.y, item.radius, 0, pi2);
         context.fill();
-        context.closePath();
       });
 
       window.requestAnimationFrame(changeCanvas);
@@ -93,7 +82,17 @@ const Canvas = () => {
     };
   }, [windowHeight, windowWidth]);
 
-  return <canvas ref={canvasRef} style={{ backgroundColor: "black" }} />;
+  return (
+    <canvas
+      ref={canvasRef}
+      style={{
+        backgroundColor: "black",
+        top: `-${radius[1]}px`,
+        left: `-${radius[1]}px`,
+        position: "absolute",
+      }}
+    />
+  );
 };
 
 export default Canvas;
